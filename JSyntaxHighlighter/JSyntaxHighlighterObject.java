@@ -28,6 +28,7 @@ public class JSyntaxHighlighterObject extends JTextPane {
 	private SyntaxStyle SYNTAX_STYLE = new SyntaxStyle();
 	private static String SYNTAX_KEYWORDS_RULE;
 	private static final String SYNTAX_STRING_RULE = "\\\"(\\.|[^\\\"])*\\\"";
+	private static final String SYNTAX_STRING_WITH_ESCAPE_RULE = "(\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")";
 	private static final String SYNTAX_NUMERIC_RULE = "\\b\\d+[\\.]?\\d*([eE]\\-?\\d+)?[lLdDfF]?\\b|\\b0x[a-fA-F\\d]+\\b";
 		
 	/**
@@ -170,6 +171,12 @@ public class JSyntaxHighlighterObject extends JTextPane {
 				Matcher matchStr = patternStr.matcher(((JTextPane) e.getSource()).getText());
 				while (matchStr.find()){
 					updateSyntaxColor(matchStr.start(), matchStr.end() - matchStr.start(), SYNTAX_STYLE.STRINGS);
+				}
+				
+				Pattern patternStrE = Pattern.compile(SYNTAX_STRING_WITH_ESCAPE_RULE);
+				Matcher matchStrE = patternStrE.matcher(((JTextPane) e.getSource()).getText());
+				while (matchStrE.find()){
+					updateSyntaxColor(matchStrE.start(), matchStrE.end() - matchStrE.start(), SYNTAX_STYLE.STRINGS);
 				}
 				
 				Pattern patternNum = Pattern.compile(SYNTAX_NUMERIC_RULE);
