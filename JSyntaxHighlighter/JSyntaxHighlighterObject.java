@@ -12,12 +12,15 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.*;
+import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
-public class JHighlighter extends JTextPane {
+public class JSyntaxHighlighterObject extends JTextPane {
 
 	private StyledDocument styledDoc;
 	private static final long serialVersionUID = -2995700771349481427L;
@@ -26,15 +29,13 @@ public class JHighlighter extends JTextPane {
 	private static String SYNTAX_KEYWORDS_RULE;
 	private static final String SYNTAX_STRING_RULE = "\\\"(\\.|[^\\\"])*\\\"";
 	private static final String SYNTAX_NUMERIC_RULE = "\\b\\d+[\\.]?\\d*([eE]\\-?\\d+)?[lLdDfF]?\\b|\\b0x[a-fA-F\\d]+\\b";
-	
-	
+		
 	/**
 	 * Create a new JHighlighter Object with a predefined language and theme.
 	 * @param language
 	 * @param theme
 	 */
-	public JHighlighter(Language language, Theme theme, boolean showLineNumbers){		
-		this.setEditorKit(new LineNumbers());
+	public JSyntaxHighlighterObject(Language language, Theme theme){				
 		this.setMargin(new Insets(2,20,0,0));
 		this.setTheme(theme);
 		
@@ -94,7 +95,6 @@ public class JHighlighter extends JTextPane {
 			e.printStackTrace();
 		}
 		
-		this.setFont(Meslo);
 		this.setFont(Meslo);
 		
 	}
