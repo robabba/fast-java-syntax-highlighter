@@ -1,10 +1,12 @@
 package JSyntaxHighlighter;
 
-public enum Theme {
+public enum Themes {
 
 	Monokai,
 	Tomorrow,
 	TomorrowNight,
+	Obsidian,
+	SolarizedDark,
 	
 	
 }

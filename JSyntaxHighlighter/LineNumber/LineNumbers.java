@@ -32,7 +32,7 @@ public class LineNumbers extends JPanel
 
 	//  Text component this TextTextLineNumber component is in sync with
 
-	private JTextComponent component;
+	private JTextPane component;
 
 	//  Properties that can be changed
 
@@ -57,7 +57,7 @@ public class LineNumbers extends JPanel
 	 *
 	 *  @param component  the related text component
 	 */
-	public LineNumbers(JTextComponent component, Color fore, Color back)
+	public LineNumbers(JTextPane component, Color fore, Color back)
 	{
 		this(component, 4, fore, back);
 	}
@@ -69,7 +69,7 @@ public class LineNumbers extends JPanel
 	 *  @param minimumDisplayDigits  the number of digits used to calculate
 	 *                               the minimum width of the component
 	 */
-	public LineNumbers(JTextComponent component, int minimumDisplayDigits,  Color fore, Color back)
+	public LineNumbers(JTextPane component, int minimumDisplayDigits,  Color fore, Color back)
 	{
 		this.component = component;
 
@@ -83,7 +83,7 @@ public class LineNumbers extends JPanel
 		setDigitAlignment( RIGHT );
 		setMinimumDisplayDigits( minimumDisplayDigits );
 
-		component.getDocument().addDocumentListener(this);
+		component.getStyledDocument().addDocumentListener(this);
 		component.addCaretListener( this );
 		component.addPropertyChangeListener("font", this);
 	}
@@ -210,7 +210,7 @@ public class LineNumbers extends JPanel
 	 */
 	private void setPreferredWidth()
 	{
-		Element root = component.getDocument().getDefaultRootElement();
+		Element root = component.getStyledDocument().getDefaultRootElement();
 		int lines = root.getElementCount();
 		int digits = Math.max(String.valueOf(lines).length(), minimumDisplayDigits);
 
@@ -284,7 +284,7 @@ public class LineNumbers extends JPanel
 	private boolean isCurrentLine(int rowStartOffset)
 	{
 		int caretPosition = component.getCaretPosition();
-		Element root = component.getDocument().getDefaultRootElement();
+		Element root = component.getStyledDocument().getDefaultRootElement();
 
 		if (root.getElementIndex( rowStartOffset ) == root.getElementIndex(caretPosition))
 			return true;
@@ -298,7 +298,7 @@ public class LineNumbers extends JPanel
 	 */
 	protected String getTextLineNumber(int rowStartOffset)
 	{
-		Element root = component.getDocument().getDefaultRootElement();
+		Element root = component.getStyledDocument().getDefaultRootElement();
 		int index = root.getElementIndex( rowStartOffset );
 		Element line = root.getElement( index );
 
@@ -341,7 +341,7 @@ public class LineNumbers extends JPanel
 			if (fonts == null)
 				fonts = new HashMap<String, FontMetrics>();
 
-			Element root = component.getDocument().getDefaultRootElement();
+			Element root = component.getStyledDocument().getDefaultRootElement();
 			int index = root.getElementIndex( rowStartOffset );
 			Element line = root.getElement( index );
 
@@ -378,7 +378,7 @@ public class LineNumbers extends JPanel
 		//  Get the line the caret is positioned on
 
 		int caretPosition = component.getCaretPosition();
-		Element root = component.getDocument().getDefaultRootElement();
+		Element root = component.getStyledDocument().getDefaultRootElement();
 		int currentLine = root.getElementIndex( caretPosition );
 
 		//  Need to repaint so the correct line number can be highlighted
@@ -427,7 +427,7 @@ public class LineNumbers extends JPanel
 			{
 				try
 				{
-					int endPos = component.getDocument().getLength();
+					int endPos = component.getStyledDocument().getLength();
 					Rectangle rect = component.modelToView(endPos);
 
 					if (rect != null && rect.y != lastHeight)

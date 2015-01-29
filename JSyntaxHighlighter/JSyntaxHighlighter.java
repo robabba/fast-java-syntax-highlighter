@@ -25,7 +25,7 @@ public class JSyntaxHighlighter extends JScrollPane {
 		applyFont();
 	}
 	
-	public JSyntaxHighlighter(Language language, Theme theme){
+	public JSyntaxHighlighter(Language language, Themes theme){
 		sho = new JSyntaxHighlighterObject(language, theme);
 		this.setViewportView(sho);
 		
@@ -41,7 +41,18 @@ public class JSyntaxHighlighter extends JScrollPane {
 		applyFont();
 	}
 	
-	public JSyntaxHighlighter(Language language, Theme theme, boolean showLineNumbers){
+	/**
+	 * Change the current Theme of the Syntax
+	 * @see Theme
+	 * @param theme
+	 */
+	public void changeHighlightTheme(Themes theme){
+		
+		sho.changeSyntaxHighlightingTheme(theme);
+		
+	}
+	
+	public JSyntaxHighlighter(Language language, Themes theme, boolean showLineNumbers){
 		sho = new JSyntaxHighlighterObject(language, theme);
 		this.setViewportView(sho);
 		
@@ -51,7 +62,7 @@ public class JSyntaxHighlighter extends JScrollPane {
 			this.setForeground(Color.decode("#F8F8F2"));
 			
 			if (showLineNumbers){
-				line = new LineNumbers(sho, Color.decode("#F8F8F2"), Color.decode("#272822"));
+				line = new LineNumbers (sho, Color.decode("#F8F8F2"), Color.decode("#272822"));
 				setRowHeaderView(line);
 			}
 			
@@ -77,5 +88,10 @@ public class JSyntaxHighlighter extends JScrollPane {
 		}
 		
 		this.setFont(Meslo);
+	}
+	
+	public void setText(String text){
+		sho.setText(text);
+		sho.highlightSyntax();
 	}
 }
