@@ -23,7 +23,7 @@ To use JSyntaxHighlighter, simply add the Library to your project and add the fo
 + Visual Basic
 
 #####Setting the Color Scheme (Language needs to be specified)
-`...JSyntaxHighlighter(Language.Java, Theme.Obsidian)`
+`...JSyntaxHighlighter(Language.Java, Themes.Obsidian)`
 
 ######Color Schemes Available:
 + Dusk
