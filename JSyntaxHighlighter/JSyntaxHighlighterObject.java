@@ -1,3 +1,24 @@
+/* 	Copyright (c) 2015 Robert Abba
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+*/
+
 package JSyntaxHighlighter;
 
 import java.awt.Color;
@@ -38,6 +59,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 	private static final String SYNTAX_MULTILINE_COMMENT_RULE = "/\\*(.|[\\r\\n])*?\\*/";
 	private static final String SYNTAX_SINGLELINE_COMMENT_RULE = "//.*";
 	private static final String SYNTAX_OPERATOR_RULE = "(<=|>=|!=|=|>|<)";
+	//private static final String SYNTAX_FUNCTION_RULE = "([a-zA-Z0-9]*)\\s*\\([^()]*\\)";
 	
 	private ThemeModifier themeMod;
 
@@ -47,9 +69,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 	 * @param theme
 	 */
 	public JSyntaxHighlighterObject(Language language, Themes theme){				
-		this.setMargin(new Insets(2,20,0,0));
-		this.setTheme(theme);
-		this.setCaretColor(Color.WHITE);
+		this.setMargin(new Insets(10,15,0,0));
 		this.setTabSpacing();
 		
 		styledDoc = this.getStyledDocument();
@@ -106,16 +126,8 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		}
 		
 		this.setFont(Meslo);
+		this.changeSyntaxHighlightingTheme(theme);
 		this.addKeyListener(highlight());
-	}
-	
-	
-	private void setTheme(Themes theme){
-		themeMod = new ThemeModifier(theme);
-		SYNTAX_STYLE = themeMod.getNewStyle();
-		this.setBackground(themeMod.getBackground());
-		this.setForeground(themeMod.getForeground());
-		LinePainter ln = new LinePainter(this, themeMod.getCurrentLineColor());
 	}
 	
 	public void changeSyntaxHighlightingTheme(Themes theme){
@@ -123,7 +135,11 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		SYNTAX_STYLE = themeMod.getNewStyle();
 		this.setBackground(themeMod.getBackground());
 		this.setForeground(themeMod.getForeground());
+		this.setCaretColor(themeMod.getCaretColor());
+		this.setSelectionColor(themeMod.getSelectionBackColor());
+		
 		LinePainter ln = new LinePainter(this, themeMod.getCurrentLineColor());
+		
 		try{
 			highlightSyntax();
 		}catch (Exception e){
@@ -187,7 +203,6 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			styledDoc.setCharacterAttributes(offset, length, asetF, true);
 		else
 			styledDoc.setCharacterAttributes(offset, length, aset, true);
-		
 	}
 	
 	private void clearSyntaxColors(){
@@ -206,7 +221,14 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			@Override
 			public void keyReleased(KeyEvent e) {
 				clearSyntaxColors();
-									
+				
+				/* Functions
+				Pattern patternFun = Pattern.compile(SYNTAX_FUNCTION_RULE);
+				Matcher matchFun = patternFun.matcher(((JTextPane) e.getSource()).getText());
+				while (matchFun.find()){
+					updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.FUNCTION, Font.BOLD);
+				}*/
+							
 				// Class
 				Pattern patternClass = Pattern.compile(SYNTAX_CLASS_RULE);
 				Matcher matchClass = patternClass.matcher(((JTextPane) e.getSource()).getText());
@@ -272,6 +294,13 @@ public class JSyntaxHighlighterObject extends JTextPane{
 	public void highlightSyntax(){
 		
 		clearSyntaxColors();
+		
+		/* Functions
+		Pattern patternFun = Pattern.compile(SYNTAX_FUNCTION_RULE);
+		Matcher matchFun = patternFun.matcher(this.getText());
+		while (matchFun.find()){
+			updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.KEYWORDS, Font.BOLD);
+		}*/
 		
 		// Class
 		Pattern patternClass = Pattern.compile(SYNTAX_CLASS_RULE);
