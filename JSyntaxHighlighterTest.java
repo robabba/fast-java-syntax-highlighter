@@ -32,7 +32,7 @@ public class JSyntaxHighlighterTest {
 
 	public static void main(String[] args) {
 		
-			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.Java, Themes.Tomorrow);
+			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.CSharp, Themes.VibrantInk);
 			syntaxHighlighter.setText("public class HelloWorld{\n\n\tpublic static void main (String[] args){\n\t\tSystem.out.println(\"Hello, World\");\n\t}\n\n}");
 			
 			JFrame form = new JFrame("JSyntaxHighlighter");

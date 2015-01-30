@@ -59,7 +59,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 	private static final String SYNTAX_MULTILINE_COMMENT_RULE = "/\\*(.|[\\r\\n])*?\\*/";
 	private static final String SYNTAX_SINGLELINE_COMMENT_RULE = "//.*";
 	private static final String SYNTAX_OPERATOR_RULE = "(<=|>=|!=|=|>|<)";
-	//private static final String SYNTAX_FUNCTION_RULE = "([a-zA-Z0-9]*)\\s*\\([^()]*\\)";
+	private static final String SYNTAX_FUNCTION_RULE = "(\\w+\\()+([^\\)]*\\)+)*";
 	
 	private ThemeModifier themeMod;
 
@@ -78,35 +78,29 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			
 		switch (language){
 		case Java:
-			Syntax syntax = new Syntax();
-			syntax.addKeywords(javaSyntax());
-			syntax.buildSyntaxHighlighter();
+			Syntax syntaxJava = new Syntax();
+			syntaxJava.addKeywords(JavaSyntax());
+			syntaxJava.buildSyntaxHighlighter();
 			
-			SYNTAX_KEYWORDS_RULE = syntax.getKeywordsRegexRule();
+			SYNTAX_KEYWORDS_RULE = syntaxJava.getKeywordsRegexRule();
 			break;
 		case C:
+			Syntax syntaxC = new Syntax();
+			syntaxC.addKeywords(CSyntax());
+			syntaxC.buildSyntaxHighlighter();
+			SYNTAX_KEYWORDS_RULE = syntaxC.getKeywordsRegexRule();
 			break;
 		case CPP:
-			break;
-		case CSS:
+			Syntax syntaxCPP = new Syntax();
+			syntaxCPP.addKeywords(CPPSyntax());
+			syntaxCPP.buildSyntaxHighlighter();
+			SYNTAX_KEYWORDS_RULE = syntaxCPP.getKeywordsRegexRule();
 			break;
 		case CSharp:
-			break;
-		case HTML:
-			break;
-		case JavaScript:
-			break;
-		case ObjectiveC:
-			break;
-		case PHP:
-			break;
-		case SASS:
-			break;
-		case SCSS:
-			break;
-		case XML:
-			break;
-		case YAML:
+			Syntax syntaxCS = new Syntax();
+			syntaxCS.addKeywords(CSSyntax());
+			syntaxCS.buildSyntaxHighlighter();
+			SYNTAX_KEYWORDS_RULE = syntaxCS.getKeywordsRegexRule();
 			break;
 		default:
 			break;
@@ -167,7 +161,37 @@ public class JSyntaxHighlighterObject extends JTextPane{
         this.getStyledDocument().setParagraphAttributes(0, length, attributes, true);
 	}
 	
-	private String[] javaSyntax(){
+	// Make keyword Syntax
+	private String[] CSyntax(){
+		return new String[] {"auto", "break", "case","const", "continue", "default", "do", 
+							"double", "else","enum", "extern","float", "goto","if", "int", 
+							"long", "regster", "return", "short", "signed", "sizeof", "static",
+							"struct", "switch", "typedef", "union", "unsigned", "void", "volatile", "while"};
+	}
+	
+	private String[] CPPSyntax(){
+		return new String[] {"alginas", "alignof", "and", "and_eq", "asm", "auto", "bitand", "bitor", "bool",
+							"break", "case", "catch", "char", "char16_t", "char32_t", "class", "compl", "concept",
+							"const", "constexpr", "const_cast", "continue", "decltype", "default", "delete", "do","double",
+							"dynamic_cast", "else", "enum", "explicit", "export", "extern", "false", "float", "for", "friend",
+							"goto", "if", "inline", "int", "long", "mutable", "namespace", "new", "noexcept", "not", "not_eq", 
+							"nullptr", "operator", "or", "or_eq", "private", "protected", "public", "register", "reinterpret_cast",
+							"requires", "return", "short", "signed", "sizeof", "static", "static_assert", "static_cast", "struct",
+							"switch", "template", "this", "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union",
+							"unsigned", "usign","virtual", "void", "volatile", "wchar_t", "while", "xor", "xor_eq"};
+	}
+	
+	public String[] CSSyntax(){
+		return new String[] {"abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class" ,"const",
+							"continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern",
+							"false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface",
+							"internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params",
+							"private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc",
+							"static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked",
+							"unsafe", "ushort", "using", "virtual", "void", "volatile", "while" };
+	}
+	
+	private String[] JavaSyntax(){
 		return new String[]{ "abstract", "assert", "boolean", "break", "byte", "case", "catch" ,
 				"char", "class", "continue", "default", "do", "double", "else", "enum", "extends",
 				"final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", 
@@ -222,12 +246,12 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			public void keyReleased(KeyEvent e) {
 				clearSyntaxColors();
 				
-				/* Functions
+				// Functions
 				Pattern patternFun = Pattern.compile(SYNTAX_FUNCTION_RULE);
 				Matcher matchFun = patternFun.matcher(((JTextPane) e.getSource()).getText());
 				while (matchFun.find()){
-					updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.FUNCTION, Font.BOLD);
-				}*/
+					updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.FUNCTION, 3);
+				}
 							
 				// Class
 				Pattern patternClass = Pattern.compile(SYNTAX_CLASS_RULE);
@@ -295,12 +319,12 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		
 		clearSyntaxColors();
 		
-		/* Functions
+		// Functions
 		Pattern patternFun = Pattern.compile(SYNTAX_FUNCTION_RULE);
 		Matcher matchFun = patternFun.matcher(this.getText());
 		while (matchFun.find()){
-			updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.KEYWORDS, Font.BOLD);
-		}*/
+			updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.KEYWORDS, 3);
+		}
 		
 		// Class
 		Pattern patternClass = Pattern.compile(SYNTAX_CLASS_RULE);

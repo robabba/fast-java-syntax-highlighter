@@ -11,8 +11,16 @@ To use JSyntaxHighlighter, simply add the Library to your project and add the fo
 `JSyntaxHighlighter synHighlighter = new JSyntaxHighlighter();`
 
 ####Options available for new JSyntaxHighlighter()
+
 #####Setting the Language
 `...JSyntaxHighlighter(Language.Java)`
+
+######Languages Available:
++ C
++ C++
++ C#
++ Java
++ Visual Basic
 
 #####Setting the Color Scheme (Language needs to be specified)
 `...JSyntaxHighlighter(Language.Java, Theme.Obsdian)`
