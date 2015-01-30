@@ -23,11 +23,12 @@ To use JSyntaxHighlighter, simply add the Library to your project and add the fo
 + Visual Basic
 
 #####Setting the Color Scheme (Language needs to be specified)
-`...JSyntaxHighlighter(Language.Java, Theme.Obsdian)`
+`...JSyntaxHighlighter(Language.Java, Theme.Obsidian)`
 
 ######Color Schemes Available:
 + Dusk
 + Monokai Extended (Sublime Text 3 ver.)
++ Obsidian
 + Tomorrow
 + Tomrrow Night
 + Solarized Dark
