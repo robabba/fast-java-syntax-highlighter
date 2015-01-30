@@ -32,10 +32,10 @@ public class JSyntaxHighlighterTest {
 
 	public static void main(String[] args) {
 		
-			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.CSharp, Themes.VibrantInk);
+			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.VisualBasic, Themes.VibrantInk);
 			syntaxHighlighter.setText("public class HelloWorld{\n\n\tpublic static void main (String[] args){\n\t\tSystem.out.println(\"Hello, World\");\n\t}\n\n}");
 			
-			JFrame form = new JFrame("JSyntaxHighlighter");
+			JFrame form = new JFrame("JSyntaxHighlighter - Alpha Build");
 			form.setLayout(new BorderLayout());
 			JComboBox<String> comboBox = new JComboBox<String>();
 			
