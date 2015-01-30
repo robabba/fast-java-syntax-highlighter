@@ -6,7 +6,7 @@ JSyntaxHighlighter is a highly configurable Syntax Highlighter for Java.
 
 How to use
 ----------
-To use JSyntaxHighlighter, simply add the Library to your project and add the following to your respective JFrame file:
+To use JSyntaxHighlighter, simply download and add the library JSyntaxHighlighter.jar to your project and add the following to your respective JFrame file:
 
 `JSyntaxHighlighter synHighlighter = new JSyntaxHighlighter();`
 
