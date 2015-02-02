@@ -20,11 +20,12 @@
 */
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import JSyntaxHighlighter.*;
-
 
 import javax.swing.*;
 
@@ -32,13 +33,20 @@ public class JSyntaxHighlighterTest {
 
 	public static void main(String[] args) {
 		
-			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.VisualBasic, Themes.VibrantInk);
-			syntaxHighlighter.setText("public class HelloWorld{\n\n\tpublic static void main (String[] args){\n\t\tSystem.out.println(\"Hello, World\");\n\t}\n\n}");
+			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter();
+			//syntaxHighlighter.setText("public class HelloWorld{\n\n\tpublic static void main (String[] args){\n\t\tSystem.out.println(\"Hello, World\");\n\t}\n\n}");
 			
 			JFrame form = new JFrame("JSyntaxHighlighter - Alpha Build");
-			form.setLayout(new BorderLayout());
-			JComboBox<String> comboBox = new JComboBox<String>();
 			
+			form.setSize(800, 500);
+			
+			syntaxHighlighter.setSize(form.getSize().width , form.getSize().height - 100);
+		
+			form.setLayout(null);
+			JComboBox<String> comboBox = new JComboBox<String>();
+			JComboBox<String> langBox = new JComboBox<String>();
+			
+			// Themes
 			comboBox.addItem("-- Change Theme --");
 			comboBox.addItem("Dusk");
 			comboBox.addItem("Monokai");
@@ -49,6 +57,14 @@ public class JSyntaxHighlighterTest {
 			comboBox.addItem("Vibrant Ink");
 			comboBox.addItem("Xcode");
 			
+			// Language
+			langBox.addItem("-- Change Language --");
+			langBox.addItem("C");
+			langBox.addItem("C++");
+			langBox.addItem("Java");
+			langBox.addItem("Visual Basic");
+	
+			// Listeners
 			comboBox.addItemListener(new ItemListener(){
 
 				@Override
@@ -77,11 +93,35 @@ public class JSyntaxHighlighterTest {
 				
 			});
 			
+			langBox.addItemListener(new ItemListener(){
+				
+				@Override
+				public void itemStateChanged(ItemEvent e){
+					Object item = e.getItem();
+					
+					if (item.toString() == "C"){
+						syntaxHighlighter.changeLanguage(Language.C);
+					}else if (item.toString() == "C++"){
+						syntaxHighlighter.changeLanguage(Language.CPP);
+					}else if (item.toString() == "Java"){
+						syntaxHighlighter.changeLanguage(Language.Java);
+					}else if (item.toString() == "Visual Basic"){
+						syntaxHighlighter.changeLanguage(Language.VisualBasic);
+					}
+				}
+				
+			});
 			
-			form.add(syntaxHighlighter, BorderLayout.CENTER);
-			form.add(comboBox, BorderLayout.EAST );
+			comboBox.setSize(300, 20);
+			comboBox.setLocation(330, 410);
+			
+			langBox.setSize(300, 20);
+			langBox.setLocation(10, 410);
+			
+			form.add(syntaxHighlighter);
+			form.add(langBox);
+			form.add(comboBox);
 			//form.add(sPane);
-			form.setSize(800, 500);
 			form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			form.setVisible(true);
 	}

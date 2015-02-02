@@ -34,6 +34,13 @@ public class JSyntaxHighlighter extends JScrollPane {
 	private static final long serialVersionUID = 8111955883531380120L;
 	private JSyntaxHighlighterObject sho = null;
 	
+	public JSyntaxHighlighter(){
+		sho = new JSyntaxHighlighterObject();
+		this.setViewportView(sho);
+		
+		applyFont();
+	}
+	
 	public JSyntaxHighlighter(Language language){
 		sho = new JSyntaxHighlighterObject(language, null);
 		this.setViewportView(sho);
@@ -58,6 +65,10 @@ public class JSyntaxHighlighter extends JScrollPane {
 		
 		sho.changeSyntaxHighlightingTheme(theme);
 		
+	}
+	
+	public void changeLanguage(Language language){
+		sho.changeLanguage(language);
 	}
 
 	private void applyFont(){

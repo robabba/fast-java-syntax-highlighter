@@ -63,6 +63,33 @@ public class JSyntaxHighlighterObject extends JTextPane{
 	
 	private ThemeModifier themeMod;
 
+	// Default constructor
+	public JSyntaxHighlighterObject(){				
+		this.setMargin(new Insets(10,15,0,0));
+		this.setTabSpacing();
+		
+		styledDoc = this.getStyledDocument();
+
+		this.getStyledDocument().putProperty(DefaultEditorKit.EndOfLineStringProperty, "\n");
+		
+		// Add Meslo font
+		Font Meslo = null;
+		
+		try{
+		    Meslo = Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")).deriveFont(Font.BOLD, 12f);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")));
+		}catch(IOException e){
+			e.printStackTrace();
+		}catch (FontFormatException e) {
+			e.printStackTrace();
+		}
+		
+		this.setFont(Meslo);
+		
+		//this.addKeyListener(highlight());
+	}
+	
 	/**
 	 * Create a new JHighlighter Object with a predefined language and theme.
 	 * @param language
@@ -75,7 +102,48 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		styledDoc = this.getStyledDocument();
 
 		this.getStyledDocument().putProperty(DefaultEditorKit.EndOfLineStringProperty, "\n");
-			
+		
+		// Add Meslo font
+		Font Meslo = null;
+		
+		try{
+		    Meslo = Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")).deriveFont(Font.BOLD, 12f);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")));
+		}catch(IOException e){
+			e.printStackTrace();
+		}catch (FontFormatException e) {
+			e.printStackTrace();
+		}
+		
+		this.setFont(Meslo);
+		this.changeLanguage(language);
+		this.changeSyntaxHighlightingTheme(theme);
+	
+		this.addKeyListener(highlight());
+	}
+	
+	public void changeSyntaxHighlightingTheme(Themes theme){
+		themeMod = new ThemeModifier(theme);
+		SYNTAX_STYLE = themeMod.getNewStyle();
+		this.setBackground(themeMod.getBackground());
+		this.setForeground(themeMod.getForeground());
+		this.setCaretColor(themeMod.getCaretColor());
+		this.setSelectionColor(themeMod.getSelectionBackColor());
+		
+		LinePainter ln = new LinePainter(this, themeMod.getCurrentLineColor());
+		
+		try{
+			highlightSyntax();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		this.addKeyListener(highlight());
+	}
+	
+	public void changeLanguage(Language language){
+		
 		Syntax syntax = new Syntax();
 		
 		switch (language){
@@ -110,40 +178,9 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		default:
 			break;
 		}
-
-		// Add Meslo font
-		Font Meslo = null;
 		
-		try{
-		    Meslo = Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")).deriveFont(Font.BOLD, 12f);
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")));
-		}catch(IOException e){
-			e.printStackTrace();
-		}catch (FontFormatException e) {
-			e.printStackTrace();
-		}
-		
-		this.setFont(Meslo);
-		this.changeSyntaxHighlightingTheme(theme);
+		this.highlightSyntax();
 		this.addKeyListener(highlight());
-	}
-	
-	public void changeSyntaxHighlightingTheme(Themes theme){
-		themeMod = new ThemeModifier(theme);
-		SYNTAX_STYLE = themeMod.getNewStyle();
-		this.setBackground(themeMod.getBackground());
-		this.setForeground(themeMod.getForeground());
-		this.setCaretColor(themeMod.getCaretColor());
-		this.setSelectionColor(themeMod.getSelectionBackColor());
-		
-		LinePainter ln = new LinePainter(this, themeMod.getCurrentLineColor());
-		
-		try{
-			highlightSyntax();
-		}catch (Exception e){
-			e.printStackTrace();
-		}
 	}
 	
 	private void setTabSpacing(){
@@ -206,75 +243,80 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			public void keyTyped(KeyEvent e) { /* NOTHING DO DO */ }
 
 			@Override
-			public void keyPressed(KeyEvent e) { /* NOTHING TO DO */ }
+			public void keyPressed(KeyEvent e) { 
+				char ch = e.getKeyChar();
+				if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n' || ch == '.' || ch == '('){
+					clearSyntaxColors();
+					
+					// Functions
+					Pattern patternFun = Pattern.compile(SYNTAX_FUNCTION_RULE);
+					Matcher matchFun = patternFun.matcher(((JTextPane) e.getSource()).getText());
+					while (matchFun.find()){
+						updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.FUNCTION, 3);
+					}
+								
+					// Class
+					Pattern patternClass = Pattern.compile(SYNTAX_CLASS_RULE);
+					Matcher matchClass = patternClass.matcher(((JTextPane) e.getSource()).getText());
+					while (matchClass.find()){
+						updateSyntaxColor(matchClass.start(), matchClass.end() - matchClass.start(), SYNTAX_STYLE.CLASS, 3);
+					}
+									
+					// Keywords
+					Pattern patternKey = Pattern.compile(SYNTAX_KEYWORDS_RULE);
+					Matcher matchKey = patternKey.matcher(((JTextPane) e.getSource()).getText());
+					while (matchKey.find()){
+						updateSyntaxColor(matchKey.start(), matchKey.end() - matchKey.start(), SYNTAX_STYLE.KEYWORDS, Font.BOLD);
+					}
+								
+					// Operators
+					Pattern patternOp = Pattern.compile(SYNTAX_OPERATOR_RULE);
+					Matcher matchOp = patternOp.matcher(((JTextPane) e.getSource()).getText());
+					while (matchOp.find()){
+						updateSyntaxColor(matchOp.start(), matchOp.end() - matchOp.start(), SYNTAX_STYLE.KEYWORDS, Font.BOLD);
+					}
+					
+					// Generic String
+					Pattern patternStr = Pattern.compile(SYNTAX_STRING_RULE);
+					Matcher matchStr = patternStr.matcher(((JTextPane) e.getSource()).getText());
+					while (matchStr.find()){
+						updateSyntaxColor(matchStr.start(), matchStr.end() - matchStr.start(), SYNTAX_STYLE.STRINGS,Font.BOLD);
+					}
+					
+					
+					// String with escape character
+					Pattern patternStrE = Pattern.compile(SYNTAX_STRING_WITH_ESCAPE_RULE);
+					Matcher matchStrE = patternStrE.matcher(((JTextPane) e.getSource()).getText());
+					while (matchStrE.find()){
+						updateSyntaxColor(matchStrE.start(), matchStrE.end() - matchStrE.start(), SYNTAX_STYLE.STRINGS, Font.BOLD);
+					}
+					
+					// Numbers
+					Pattern patternNum = Pattern.compile(SYNTAX_NUMERIC_RULE);
+					Matcher matchNum = patternNum.matcher(((JTextPane) e.getSource()).getText());
+					while (matchNum.find()){
+						updateSyntaxColor(matchNum.start(), matchNum.end() - matchNum.start(), SYNTAX_STYLE.NUMERICAL, Font.BOLD);
+					}
+					
+					// Comments (Multilined)
+					Pattern patternCML = Pattern.compile(SYNTAX_MULTILINE_COMMENT_RULE);
+					Matcher matchCML = patternCML.matcher(((JTextPane) e.getSource()).getText());
+					while (matchCML.find()){
+						updateSyntaxColor(matchCML.start(), matchCML.end() - matchCML.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
+					}
+					
+					// Comments (Single)
+					Pattern patternC = Pattern.compile(SYNTAX_SINGLELINE_COMMENT_RULE);
+					Matcher matchC = patternC.matcher(((JTextPane) e.getSource()).getText());
+					while (matchC.find()){
+						updateSyntaxColor(matchC.start(), matchC.end() - matchC.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
+					}
+				}
+			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				clearSyntaxColors();
 				
-				// Functions
-				Pattern patternFun = Pattern.compile(SYNTAX_FUNCTION_RULE);
-				Matcher matchFun = patternFun.matcher(((JTextPane) e.getSource()).getText());
-				while (matchFun.find()){
-					updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.FUNCTION, 3);
-				}
-							
-				// Class
-				Pattern patternClass = Pattern.compile(SYNTAX_CLASS_RULE);
-				Matcher matchClass = patternClass.matcher(((JTextPane) e.getSource()).getText());
-				while (matchClass.find()){
-					updateSyntaxColor(matchClass.start(), matchClass.end() - matchClass.start(), SYNTAX_STYLE.CLASS, 3);
-				}
-								
-				// Keywords
-				Pattern patternKey = Pattern.compile(SYNTAX_KEYWORDS_RULE);
-				Matcher matchKey = patternKey.matcher(((JTextPane) e.getSource()).getText());
-				while (matchKey.find()){
-					updateSyntaxColor(matchKey.start(), matchKey.end() - matchKey.start(), SYNTAX_STYLE.KEYWORDS, Font.BOLD);
-				}
-				
-				// Operators
-				Pattern patternOp = Pattern.compile(SYNTAX_OPERATOR_RULE);
-				Matcher matchOp = patternOp.matcher(((JTextPane) e.getSource()).getText());
-				while (matchOp.find()){
-					updateSyntaxColor(matchOp.start(), matchOp.end() - matchOp.start(), SYNTAX_STYLE.KEYWORDS, Font.BOLD);
-				}
-				
-				// Generic String
-				Pattern patternStr = Pattern.compile(SYNTAX_STRING_RULE);
-				Matcher matchStr = patternStr.matcher(((JTextPane) e.getSource()).getText());
-				while (matchStr.find()){
-					updateSyntaxColor(matchStr.start(), matchStr.end() - matchStr.start(), SYNTAX_STYLE.STRINGS,Font.BOLD);
-				}
-				
-				
-				// String with escape character
-				Pattern patternStrE = Pattern.compile(SYNTAX_STRING_WITH_ESCAPE_RULE);
-				Matcher matchStrE = patternStrE.matcher(((JTextPane) e.getSource()).getText());
-				while (matchStrE.find()){
-					updateSyntaxColor(matchStrE.start(), matchStrE.end() - matchStrE.start(), SYNTAX_STYLE.STRINGS, Font.BOLD);
-				}
-				
-				// Numbers
-				Pattern patternNum = Pattern.compile(SYNTAX_NUMERIC_RULE);
-				Matcher matchNum = patternNum.matcher(((JTextPane) e.getSource()).getText());
-				while (matchNum.find()){
-					updateSyntaxColor(matchNum.start(), matchNum.end() - matchNum.start(), SYNTAX_STYLE.NUMERICAL, Font.BOLD);
-				}
-				
-				// Comments (Multilined)
-				Pattern patternCML = Pattern.compile(SYNTAX_MULTILINE_COMMENT_RULE);
-				Matcher matchCML = patternCML.matcher(((JTextPane) e.getSource()).getText());
-				while (matchCML.find()){
-					updateSyntaxColor(matchCML.start(), matchCML.end() - matchCML.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
-				}
-				
-				// Comments (Single)
-				Pattern patternC = Pattern.compile(SYNTAX_SINGLELINE_COMMENT_RULE);
-				Matcher matchC = patternC.matcher(((JTextPane) e.getSource()).getText());
-				while (matchC.find()){
-					updateSyntaxColor(matchC.start(), matchC.end() - matchC.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
-				}
 
 			}
 		};
@@ -289,7 +331,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		Pattern patternFun = Pattern.compile(SYNTAX_FUNCTION_RULE);
 		Matcher matchFun = patternFun.matcher(this.getText());
 		while (matchFun.find()){
-			updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.KEYWORDS, 3);
+			updateSyntaxColor(matchFun.start(), matchFun.end() - matchFun.start(), SYNTAX_STYLE.FUNCTION, 3);
 		}
 		
 		// Class
@@ -305,7 +347,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		while (matchKey.find()){
 			updateSyntaxColor(matchKey.start(), matchKey.end() - matchKey.start(), SYNTAX_STYLE.KEYWORDS, Font.BOLD);
 		}
-		
+
 		// Operators
 		Pattern patternOp = Pattern.compile(SYNTAX_KEYWORDS_RULE);
 		Matcher matchOp = patternOp.matcher(this.getText());
