@@ -29,11 +29,17 @@ import java.io.IOException;
 
 import javax.swing.JScrollPane;
 
+import JSyntaxHighlighter.Languages.LanguageBuilder;
+
 public class JSyntaxHighlighter extends JScrollPane {
 
 	private static final long serialVersionUID = 8111955883531380120L;
 	private JSyntaxHighlighterObject sho = null;
 	
+	/**
+	 * <b><u>JSyntaxHighlighter Default Constructor</u></b>
+	 * <br/>Creates a new instance of the JSyntaxHighlighter View
+	 */
 	public JSyntaxHighlighter(){
 		sho = new JSyntaxHighlighterObject();
 		this.setViewportView(sho);
@@ -53,6 +59,13 @@ public class JSyntaxHighlighter extends JScrollPane {
 		this.setViewportView(sho);
 		
 		sho.changeSyntaxHighlightingTheme(theme);
+		applyFont();
+	}
+	
+	public JSyntaxHighlighter(File language, Themes theme){
+		sho = new JSyntaxHighlighterObject(language, theme);
+		this.setViewportView(sho);
+
 		applyFont();
 	}
 	

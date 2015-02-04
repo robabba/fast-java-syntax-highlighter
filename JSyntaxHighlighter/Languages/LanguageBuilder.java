@@ -23,18 +23,89 @@ package JSyntaxHighlighter.Languages;
 
 import java.io.File;
 
-import javax.swing.text.Document;
-import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.*;
+
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
+import JSyntaxHighlighter.SyntaxRules;
 
 public class LanguageBuilder {
 
+	private SyntaxRules syntaxRules = new SyntaxRules();
+	
 	public LanguageBuilder(String file){
-		File f = new File(file);
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		//DocumentBuilder db = dbf.newDocumentBuilder();
-
+		buildLanguage(new File(file));
+	}
+	
+	public LanguageBuilder(File file){
+		buildLanguage(file);
+	}
+	
+	private void buildLanguage(File f){
+		
+		try{
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.parse(f);
+			
+			// normalize text
+			doc.getDocumentElement().normalize();
+			
+			if (doc.getDocumentElement().getNodeName() != "JSyntaxHighlighter"){
+				System.out.println("Error: Language file is not of JSyntaxHiglighter! Please make sure you've spelt everything correctly, and try again.");
+				return;
+			}else{
+				// Get keywords
+				NodeList keywordTag = doc.getElementsByTagName("Keywords");
+				Node node = keywordTag.item(0);
+				
+				String getNodeList = node.getTextContent().replaceAll("\t", "");
+				String[] keywordList = getNodeList.replaceAll("\t", "").split("\n");
+				syntaxRules.setKeywords(keywordList);
+				
+				// Check for overrides
+				if (doc.getElementsByTagName("Overrides") != null){
+					
+					// Get override occurrences
+					NodeList overrides = doc.getElementsByTagName("Overrides");
+					int overrideOccurrences = overrides.getLength();
+					System.out.println("Number of overrides: " + overrideOccurrences);
+					
+					for (int i = 0; i < overrideOccurrences; i++){
+						String[] overrideList = overrides.item(i).getTextContent().split("\n");
+						
+						String ruleOverride = overrides.item(i).getAttributes().getNamedItem("rule").getNodeValue();
+	
+						if (ruleOverride.equals("s-comments")){
+							
+							String str = overrideList[1].replaceAll("\t", "");
+							syntaxRules.overrideSingleCommentsRule(true, str);
+							
+						}else if (ruleOverride.equals("m-comments")){
+							
+							syntaxRules.overrideMultiCommentsRule(true, overrideList);
+							
+						}
+						
+					}
+					
+				}
+			}
+			
+		}catch (SAXParseException e){
+			e.printStackTrace();
+		}catch (Throwable t){
+			t.printStackTrace();
+		}
 		
 	}
 	
+	public SyntaxRules getRules(){
+		return syntaxRules;
+	}
+
 }

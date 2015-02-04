@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+<SyntaxDictonary>
+
+	<key>language</key>
+	<string>Java</string>
+
+	<key>syntax</key>
+	<dict>
+		<key>keywords</key>
+		<array>
+			<string>abstract</string>
+			<string>assert</string>
+			<string>break</string>
+			<string>byte</string>
+			<string>case</string>
+			<string>catch</string>
+			<string>char</string>
+			<string>class</string>
+			<string>continue</string>
+			<string>default</string>
+			<string>do</string>
+			<string>double</string>
+			<string>else</string>
+			<string>enum</string>
+			<string>extends</string>
+			<string>final</string>
+			<string>finally</string>
+			<string>for</string>
+			<string>goto</string>
+			<string>if</string>
+			<string>implements</string>
+			<string>import</string>
+			<string>instanceof</string>
+			<string>int</string>
+			<string>long</string>
+			<string>native</string>
+			<string>new</string>
+			<string>pacakge</string>
+			<string>private</string>
+			<string>protected</string>
+			<string>public</string>
+			<string>return</string>
+			<string>static</string>
+			<string>strictfp</string>
+			<string>super</string>
+			<string>switch</string>
+			<string>synchronized</string>
+			<string>this</string>
+			<string>throw</string>
+			<string>throws</string>
+			<string>transient</string>
+			<string>try</string>
+			<string>volatile</string>
+			<string>while</string>
+			<string>false</string>
+			<string>null</string>
+			<string>true</string>
+		</array>
+
+		<key>datatypes</key>
+		<array>
+			<string>byte</string>
+			<string>short</string>
+			<string>int</string>
+			<string>long</string>
+			<string>float</string>
+			<string>double</string>
+			<string>boolean</string>
+			<string>char</string>
+		</array>
+	</dict>
+
+</SyntaxDictonary>

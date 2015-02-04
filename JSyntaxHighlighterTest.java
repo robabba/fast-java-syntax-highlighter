@@ -19,12 +19,11 @@
 	THE SOFTWARE.
 */
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 
+import JSyntaxHighlighter.Languages.*;
 import JSyntaxHighlighter.*;
 
 import javax.swing.*;
@@ -33,20 +32,25 @@ public class JSyntaxHighlighterTest {
 
 	public static void main(String[] args) {
 		
-			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter();
-			//syntaxHighlighter.setText("public class HelloWorld{\n\n\tpublic static void main (String[] args){\n\t\tSystem.out.println(\"Hello, World\");\n\t}\n\n}");
-			
+			// Create a new instance of JSyntaxHighlighter
+			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(new File("src/lua.lang"), Themes.Monokai);
+			// Create a new JFrame
 			JFrame form = new JFrame("JSyntaxHighlighter - Alpha Build");
 			
+			// Set the size of the JFrame for demo purposes
 			form.setSize(800, 500);
 			
+			// Setting the size of the Syntax Highlighter
 			syntaxHighlighter.setSize(form.getSize().width , form.getSize().height - 100);
 		
+			// No layout
 			form.setLayout(null);
+			
+			// Create the JComboBox's that modify the look and language of the Syntax Highlighter
 			JComboBox<String> comboBox = new JComboBox<String>();
 			JComboBox<String> langBox = new JComboBox<String>();
 			
-			// Themes
+			// Add Themes to the combo box
 			comboBox.addItem("-- Change Theme --");
 			comboBox.addItem("Dusk");
 			comboBox.addItem("Monokai");
@@ -57,14 +61,15 @@ public class JSyntaxHighlighterTest {
 			comboBox.addItem("Vibrant Ink");
 			comboBox.addItem("Xcode");
 			
-			// Language
+			// Add Languages to the combo box
 			langBox.addItem("-- Change Language --");
 			langBox.addItem("C");
 			langBox.addItem("C++");
+			langBox.addItem("C#");
 			langBox.addItem("Java");
 			langBox.addItem("Visual Basic");
 	
-			// Listeners
+			// Add Item Listeners
 			comboBox.addItemListener(new ItemListener(){
 
 				@Override
@@ -103,6 +108,8 @@ public class JSyntaxHighlighterTest {
 						syntaxHighlighter.changeLanguage(Language.C);
 					}else if (item.toString() == "C++"){
 						syntaxHighlighter.changeLanguage(Language.CPP);
+					}else if (item.toString() == "C#"){
+						syntaxHighlighter.changeLanguage(Language.CSharp);
 					}else if (item.toString() == "Java"){
 						syntaxHighlighter.changeLanguage(Language.Java);
 					}else if (item.toString() == "Visual Basic"){
@@ -124,6 +131,8 @@ public class JSyntaxHighlighterTest {
 			//form.add(sPane);
 			form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			form.setVisible(true);
+			
+			
 	}
 
 }
