@@ -47,7 +47,7 @@ To then use your custom Language file, simply use this in the constructor:
 
 Or if you have already created a JSyntaxHighlighter object and want to change the language later on, call:
 
-`mySyntaxHighlighter.changeLanguage(new File("path-to-file/file.lang"));`
+`synHighlighter.changeLanguage(new File("path-to-file/file.lang"));`
 
 
 License
