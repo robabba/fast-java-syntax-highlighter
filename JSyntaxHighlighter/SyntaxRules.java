@@ -53,6 +53,35 @@ public class SyntaxRules {
 			String endId = "";
 			
 			for (char c : startIdentifier){
+				if (c == '[' || c == ']' || c == '*' || c == '.' || c == '|' || c == '$' || c == '?' || c == '+' || c == '"'){
+					startId += "\\" + c; 
+				}else{
+					startId += c;
+				}
+			}
+			
+			for (char c : endIdentifier){
+				if (c == '[' || c == ']' || c == '*' || c == '.' || c == '|' || c == '$' || c == '?' || c == '+' || c == '"'){
+					endId += "\\" + c; 
+				}else{
+					endId += c;
+				}
+			}
+
+			
+			SYNTAX_MULTILINE_COMMENT_RULE = startId + "(.|[\\r\\n])*?\\" + endId;
+		}
+	}
+	
+	public void overrideStringRule(boolean on, String[] overrideComponents){
+		if (on){			
+			char[] startIdentifier = overrideComponents[0].replaceAll("\t", "").toCharArray();
+			char[] endIdentifier = overrideComponents[1].replaceAll("\t", "").toCharArray();
+			
+			String startId = "";
+			String endId = "";
+			
+			for (char c : startIdentifier){
 				if (c == '[' || c == ']' || c == '*' || c == '.' || c == '|' || c == '$' || c == '?' || c == '+'){
 					startId += "\\" + c; 
 				}else{
@@ -69,7 +98,8 @@ public class SyntaxRules {
 			}
 
 			
-			SYNTAX_MULTILINE_COMMENT_RULE = startId + "(.|[\\r\\n])*?\\" + endId;
+			SYNTAX_STRING_RULE = startId + "(\\.|[^\\\"])*\\" + endId;
+			SYNTAX_STRING_WITH_ESCAPE_RULE = "(" + startId + "[^" + startId +"\\\\]*(?:\\\\.[^" + endId + "\\\\]*)*" + endId + ")";
 		}
 	}
 	

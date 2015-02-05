@@ -41,6 +41,7 @@ public class JSyntaxHighlighter extends JScrollPane {
 	public JSyntaxHighlighter(){
 		sho = new JSyntaxHighlighterObject();
 		this.setViewportView(sho);
+		this.setRowHeaderView(new LineNumbers(sho));
 		
 		applyFont();
 	}
@@ -48,6 +49,8 @@ public class JSyntaxHighlighter extends JScrollPane {
 	public JSyntaxHighlighter(Language language){
 		sho = new JSyntaxHighlighterObject(language, null);
 		this.setViewportView(sho);
+		this.setRowHeaderView(new LineNumbers(sho));
+		
 		
 		applyFont();
 	}
@@ -55,6 +58,8 @@ public class JSyntaxHighlighter extends JScrollPane {
 	public JSyntaxHighlighter(Language language, Themes theme){
 		sho = new JSyntaxHighlighterObject(language, theme);
 		this.setViewportView(sho);
+		this.setRowHeaderView(new LineNumbers(sho));
+		
 		
 		sho.changeSyntaxHighlightingTheme(theme);
 		applyFont();
@@ -63,6 +68,7 @@ public class JSyntaxHighlighter extends JScrollPane {
 	public JSyntaxHighlighter(File language, Themes theme){
 		sho = new JSyntaxHighlighterObject(language, theme);
 		this.setViewportView(sho);
+		this.setRowHeaderView(new LineNumbers(sho));
 
 		applyFont();
 	}

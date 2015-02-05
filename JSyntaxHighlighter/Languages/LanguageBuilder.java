@@ -88,6 +88,8 @@ public class LanguageBuilder {
 							
 							syntaxRules.overrideMultiCommentsRule(true, overrideList);
 							
+						}else if (ruleOverride.equals("strings")){
+							syntaxRules.overrideStringRule(true, overrideList);
 						}
 						
 					}

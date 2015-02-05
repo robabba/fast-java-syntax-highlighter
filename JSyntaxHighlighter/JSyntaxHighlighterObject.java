@@ -64,7 +64,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 	 * JSyntaxHighlighter.
 	 */
 	public JSyntaxHighlighterObject(){				
-		this.setMargin(new Insets(10,15,0,0));
+		//this.setMargin(new Insets(10,15,0,0));
 		this.setTabSpacing();
 		
 		styledDoc = this.getStyledDocument();
