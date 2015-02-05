@@ -49,6 +49,10 @@ Or if you have already created a JSyntaxHighlighter object and want to change th
 
 `synHighlighter.changeLanguage(new File("path-to-file/file.lang"));`
 
+######Rules that can be overridden within the .lang file
++ Single line Comments (s-comments)
++ Multi-line Comments  (m-comments)
+
 
 License
 -------
