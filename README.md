@@ -41,9 +41,11 @@ JSyntaxHighlighter fully supports custom language files. To create a language fi
 "lua.lang" file which can be found in the root directory.
 
 To then use your custom Language file, simply use this in the constructor:
+
 `...JSyntaxHighlighter(new File("path-to-file/file.lang", Themes.VibrantInk);`
 
 Or if you have already created a JSyntaxHighlighter object and want to change the language later on, call:
+
 `mySyntaxHighlighter.changeLanguage(new File("path-to-file/file.lang"));`
 
 
