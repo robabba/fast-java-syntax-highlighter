@@ -13,7 +13,7 @@ To use JSyntaxHighlighter, simply download and add the library JSyntaxHighlighte
 ####Options available for new JSyntaxHighlighter()
 
 #####Setting the Language
-`...JSyntaxHighlighter(Language.Java)`
+`...JSyntaxHighlighter(Language.Java);`
 
 ######Languages Available:
 + C
@@ -23,7 +23,7 @@ To use JSyntaxHighlighter, simply download and add the library JSyntaxHighlighte
 + Visual Basic
 
 #####Setting the Color Scheme (Language needs to be specified)
-`...JSyntaxHighlighter(Language.Java, Themes.Obsidian)`
+`...JSyntaxHighlighter(Language.Java, Themes.Obsidian);`
 
 ######Color Schemes Available:
 + Dusk
@@ -34,6 +34,18 @@ To use JSyntaxHighlighter, simply download and add the library JSyntaxHighlighte
 + Solarized Dark
 + Vibrant Ink
 + Xcode
+
+Custom Language Files
+---------------------
+JSyntaxHighlighter fully supports custom language files. To create a language file, create a new .lang file and follow the example given in the documented
+"lua.lang" file which can be found in the root directory.
+
+To then use your custom Language file, simply use this in the constructor:
+`...JSyntaxHighlighter(new File("path-to-file/file.lang", Themes.VibrantInk);`
+
+Or if you have already created a JSyntaxHighlighter object and want to change the language later on, call:
+`mySyntaxHighlighter.changeLanguage(new File("path-to-file/file.lang"));`
+
 
 License
 -------

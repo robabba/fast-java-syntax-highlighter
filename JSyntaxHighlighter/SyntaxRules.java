@@ -46,8 +46,8 @@ public class SyntaxRules {
 
 	public void overrideMultiCommentsRule(boolean on, String[] overrideComponents){
 		if (on){			
-			char[] startIdentifier = overrideComponents[1].replaceAll("\t", "").toCharArray();
-			char[] endIdentifier = overrideComponents[2].replaceAll("\t", "").toCharArray();
+			char[] startIdentifier = overrideComponents[0].replaceAll("\t", "").toCharArray();
+			char[] endIdentifier = overrideComponents[1].replaceAll("\t", "").toCharArray();
 			
 			String startId = "";
 			String endId = "";

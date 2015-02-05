@@ -73,7 +73,6 @@ public class LanguageBuilder {
 					// Get override occurrences
 					NodeList overrides = doc.getElementsByTagName("Overrides");
 					int overrideOccurrences = overrides.getLength();
-					System.out.println("Number of overrides: " + overrideOccurrences);
 					
 					for (int i = 0; i < overrideOccurrences; i++){
 						String[] overrideList = overrides.item(i).getTextContent().split("\n");

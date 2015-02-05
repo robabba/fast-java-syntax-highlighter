@@ -29,8 +29,6 @@ import java.io.IOException;
 
 import javax.swing.JScrollPane;
 
-import JSyntaxHighlighter.Languages.LanguageBuilder;
-
 public class JSyntaxHighlighter extends JScrollPane {
 
 	private static final long serialVersionUID = 8111955883531380120L;

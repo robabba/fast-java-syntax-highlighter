@@ -162,6 +162,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		this.setCaretColor(themeMod.getCaretColor());
 		this.setSelectionColor(themeMod.getSelectionBackColor());
 		
+		@SuppressWarnings("unused")
 		LinePainter ln = new LinePainter(this, themeMod.getCurrentLineColor());
 		
 		try{
@@ -178,15 +179,23 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		switch (language){
 		case Java:
 			syntaxRules.setKeywords(Keywords.getJavaKeywords());
+			syntaxRules.overrideSingleCommentsRule(true, "//");
+			syntaxRules.overrideMultiCommentsRule(true, new String[]{"/*", "*/"});
 			break;
 		case C:
 			syntaxRules.setKeywords(Keywords.getCKeywords());
+			syntaxRules.overrideSingleCommentsRule(true, "//");
+			syntaxRules.overrideMultiCommentsRule(true, new String[]{"/*", "*/"});
 			break;
 		case CPP:
 			syntaxRules.setKeywords(Keywords.getCPPKeywords());
+			syntaxRules.overrideSingleCommentsRule(true, "//");
+			syntaxRules.overrideMultiCommentsRule(true, new String[]{"/*", "*/"});
 			break;
 		case CSharp:
 			syntaxRules.setKeywords(Keywords.getCSKeywords());
+			syntaxRules.overrideSingleCommentsRule(true, "//");
+			syntaxRules.overrideMultiCommentsRule(true, new String[]{"/*", "*/"});
 			break;
 		case VisualBasic:
 			syntaxRules.setKeywords(Keywords.getVBKeywords());
@@ -287,7 +296,6 @@ public class JSyntaxHighlighterObject extends JTextPane{
 					while (matchKey.find()){
 						updateSyntaxColor(matchKey.start(), matchKey.end() - matchKey.start(), SYNTAX_STYLE.KEYWORDS, Font.BOLD);
 					}
-					System.out.println(syntaxRules.getKeywordsRule());
 								
 					// Operators
 					Pattern patternOp = Pattern.compile(syntaxRules.getOperatorRule());
@@ -318,20 +326,20 @@ public class JSyntaxHighlighterObject extends JTextPane{
 						updateSyntaxColor(matchNum.start(), matchNum.end() - matchNum.start(), SYNTAX_STYLE.NUMERICAL, Font.BOLD);
 					}
 					
-					// Comments (Multilined)
-					Pattern patternCML = Pattern.compile(syntaxRules.getMultiCommentRule());
-					Matcher matchCML = patternCML.matcher(((JTextPane) e.getSource()).getText());
-					while (matchCML.find()){
-						updateSyntaxColor(matchCML.start(), matchCML.end() - matchCML.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
-					}
-					
 					// Comments (Single)
 					Pattern patternC = Pattern.compile(syntaxRules.getSingleCommentRule());
 					Matcher matchC = patternC.matcher(((JTextPane) e.getSource()).getText());
 					while (matchC.find()){
 						updateSyntaxColor(matchC.start(), matchC.end() - matchC.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
 					}
-					System.out.println(syntaxRules.getSingleCommentRule());
+					
+					// Comments (Multilined)
+					Pattern patternCML = Pattern.compile(syntaxRules.getMultiCommentRule());
+					Matcher matchCML = patternCML.matcher(((JTextPane) e.getSource()).getText());
+					while (matchCML.find()){
+						updateSyntaxColor(matchCML.start(), matchCML.end() - matchCML.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
+					}
+				
 				}
 			}
 
@@ -395,13 +403,6 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			updateSyntaxColor(matchStrE.start(), matchStrE.end() - matchStrE.start(), SYNTAX_STYLE.STRINGS, Font.BOLD);
 		}
 		
-		// Comments (Multilined)
-		Pattern patternCML = Pattern.compile(syntaxRules.getMultiCommentRule());
-		Matcher matchCML = patternCML.matcher(this.getText());
-		while (matchCML.find()){
-			updateSyntaxColor(matchCML.start(), matchCML.end() - matchCML.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
-		}
-		
 		// Comments (Single)
 		Pattern patternC = Pattern.compile(syntaxRules.getSingleCommentRule());
 		Matcher matchC = patternC.matcher(this.getText());
@@ -409,6 +410,13 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			updateSyntaxColor(matchC.start(), matchC.end() - matchC.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
 		}
 				
+		
+		// Comments (Multilined)
+		Pattern patternCML = Pattern.compile(syntaxRules.getMultiCommentRule());
+		Matcher matchCML = patternCML.matcher(this.getText());
+		while (matchCML.find()){
+			updateSyntaxColor(matchCML.start(), matchCML.end() - matchCML.start(), SYNTAX_STYLE.COMMENTS, Font.ITALIC);
+		}
 		
 	}
 	
