@@ -33,7 +33,7 @@ public class JSyntaxHighlighterTest {
 	public static void main(String[] args) {
 		
 			// Create a new instance of JSyntaxHighlighter
-			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.Java, Themes.Monokai);
+			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.Java, new File("src/inkpot.color"));
 			// Create a new JFrame
 			JFrame form = new JFrame("JSyntaxHighlighter - Alpha Build");
 			

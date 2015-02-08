@@ -50,7 +50,6 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 		private static final long serialVersionUID = -7761522385042376659L;
 		private final JEditorPane editorPane;
 		private int currentLines, lineWidth, anchor, lastIndex, offset, textWidth;
-		private int currentLinePadding = 20;
 
 		public LineNumbers(JEditorPane editorPane) {
 	        this.editorPane = editorPane;
@@ -134,48 +133,48 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 		   */
 		  @Override
 		  public void paint(Graphics g) {
-			   // this.setMargin(new Insets(10,0,0,0));
-		checkLines(editorPane.getText());
-		g.setFont(editorPane.getFont());
-		FontMetrics fm = g.getFontMetrics(g.getFont().deriveFont(12f));
-		
-		if (lineWidth == 0) {
-		      lineWidth = fm.getHeight();
-		      offset = fm.getAscent() - lineWidth / 2;
-		}
-		g.setFont(editorPane.getFont().deriveFont(Font.PLAIN, 11f));
-		g.setColor(editorPane.getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(editorPane.getSelectionColor());
-		int start = max(1, min(anchor, lastIndex));
-		int end = min(currentLines, max(anchor, lastIndex));
-		
-		g.fillRect(0, (start - 1) * lineWidth - offset, textWidth, (end - start + 1) * lineWidth);
-		int maxwidth = max(textWidth, fm.stringWidth("0000"));
-		
-		        for (int i = 1; i <= currentLines; i++) {
-		              String str = Integer.toString(i);
-		
-		              maxwidth = max(maxwidth, fm.stringWidth(str));
-		              if (i >= start && i <= end) {
-		                    g.setColor(editorPane.getSelectedTextColor());
-		              } else {
-		                    g.setColor(editorPane.getForeground());
-		              }
-		              
-		              g.drawString(str, textWidth - fm.stringWidth(str), i * lineWidth + offset); 
-		        }
-		        textWidth = maxwidth;
-		        g.setColor(editorPane.getForeground());
-		        
-		        g.drawLine(maxwidth + 1, 0, maxwidth + 1, getHeight());
-		        Dimension dim = getPreferredSize();
-		
-		        if (dim.height != lineWidth * currentLines || dim.width != maxwidth + 8) {
-		              setPreferredSize(new Dimension(maxwidth + 8, lineWidth * currentLines));
-		              setMinimumSize(new Dimension(maxwidth + 8, lineWidth * currentLines));
-		              repaint();
-		        }
+			  
+			checkLines(editorPane.getText());
+			g.setFont(editorPane.getFont());
+			FontMetrics fm = g.getFontMetrics(g.getFont().deriveFont(12f));
+			
+			if (lineWidth == 0) {
+			      lineWidth = fm.getHeight();
+			      offset = fm.getAscent() - lineWidth / 2;
+			}
+			g.setFont(editorPane.getFont().deriveFont(Font.PLAIN, 11f));
+			g.setColor(editorPane.getBackground());
+			g.fillRect(0, 0, getWidth(), getHeight());
+			g.setColor(editorPane.getSelectionColor());
+			int start = max(1, min(anchor, lastIndex));
+			int end = min(currentLines, max(anchor, lastIndex));
+			
+			g.fillRect(0, (start - 1) * lineWidth - offset, textWidth, (end - start + 1) * lineWidth);
+			int maxwidth = max(textWidth, fm.stringWidth("0000"));
+			
+			    for (int i = 1; i <= currentLines; i++) {
+			          String str = Integer.toString(i);
+			
+			          maxwidth = max(maxwidth, fm.stringWidth(str));
+			          if (i >= start && i <= end) {
+			                g.setColor(editorPane.getSelectedTextColor());
+			          } else {
+			                g.setColor(editorPane.getForeground());
+			          }
+			          
+			          g.drawString(str, textWidth - fm.stringWidth(str), i * lineWidth + offset); 
+			    }
+			    textWidth = maxwidth;
+			    g.setColor(editorPane.getForeground());
+			    
+			    g.drawLine(maxwidth + 1, 0, maxwidth + 1, getHeight());
+			    Dimension dim = getPreferredSize();
+			
+			    if (dim.height != lineWidth * currentLines || dim.width != maxwidth + 8) {
+			          setPreferredSize(new Dimension(maxwidth + 8, lineWidth * currentLines));
+			          setMinimumSize(new Dimension(maxwidth + 8, lineWidth * currentLines));
+			          repaint();
+			    }
 		  }
 		
 		  /**

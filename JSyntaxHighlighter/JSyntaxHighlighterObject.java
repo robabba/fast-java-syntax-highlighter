@@ -17,9 +17,9 @@
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
-*/
 
-// Keep moving forward ~ Monty Oum (1981 - 2015)
+	Keep moving forward ~ Monty Oum (1981 - 2015)
+*/
 
 package JSyntaxHighlighter;
 
@@ -122,6 +122,67 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		this.addKeyListener(highlight());
 	}
 	
+	public JSyntaxHighlighterObject(File language, File theme){				
+		this.setMargin(new Insets(10,15,0,0));
+		this.setTabSpacing();
+		
+		styledDoc = this.getStyledDocument();
+
+		this.getStyledDocument().putProperty(DefaultEditorKit.EndOfLineStringProperty, "\n");
+		
+		// Add Meslo font
+		Font Meslo = null;
+		
+		try{
+		    Meslo = Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")).deriveFont(Font.BOLD, 12f);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")));
+		}catch(IOException e){
+			e.printStackTrace();
+		}catch (FontFormatException e) {
+			e.printStackTrace();
+		}
+		
+		this.setFont(Meslo);
+		
+		LanguageBuilder lb = new LanguageBuilder(language);
+		syntaxRules = new SyntaxRules();
+		syntaxRules = lb.getRules();
+		
+		this.changeSyntaxHighlightingTheme(theme);
+	
+		this.addKeyListener(highlight());
+	}
+	
+	public JSyntaxHighlighterObject(Language language, File theme){				
+		this.setMargin(new Insets(10,15,0,0));
+		this.setTabSpacing();
+		
+		styledDoc = this.getStyledDocument();
+
+		this.getStyledDocument().putProperty(DefaultEditorKit.EndOfLineStringProperty, "\n");
+		
+		// Add Meslo font
+		Font Meslo = null;
+		
+		try{
+		    Meslo = Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")).deriveFont(Font.BOLD, 12f);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/JHighlighter/Fonts/Menlo-Regular.ttf")));
+		}catch(IOException e){
+			e.printStackTrace();
+		}catch (FontFormatException e) {
+			e.printStackTrace();
+		}
+		
+		this.setFont(Meslo);
+		
+		this.changeLanguage(language);
+		this.changeSyntaxHighlightingTheme(theme);
+	
+		this.addKeyListener(highlight());
+	}
+	
 	public JSyntaxHighlighterObject(File language, Themes theme){				
 		this.setMargin(new Insets(10,15,0,0));
 		this.setTabSpacing();
@@ -155,7 +216,16 @@ public class JSyntaxHighlighterObject extends JTextPane{
 	}
 	
 	public void changeSyntaxHighlightingTheme(Themes theme){
-		themeMod = new ThemeModifier(theme);
+		ThemeModifier tm = new ThemeModifier(theme);
+		applyTheme(tm);
+	}
+	
+	public void changeSyntaxHighlightingTheme(File theme){
+		ThemeModifier tm = new ThemeModifier(theme);
+		applyTheme(tm);
+	}
+	
+	private void applyTheme(ThemeModifier themeMod){
 		SYNTAX_STYLE = themeMod.getNewStyle();
 		this.setBackground(themeMod.getBackground());
 		this.setForeground(themeMod.getForeground());

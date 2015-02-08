@@ -1,0 +1,17 @@
+<JSyntaxHighlighter>
+
+	<Theme name="Inkpot">
+		<Color type="foreground">#CFBFAD</Color>
+		<Color type="background">#1F1F27</Color>
+		<Color type="selection.fore">#404040</Color>
+		<Color type="selection.back">#8B8BFF</Color>
+		<Color type="caret">#FFFFFF</Color>
+		<Color type="line.numbers">#2B91AF</Color>
+		<Color type="comments">#CD8B00</Color>
+		<Color type="class">#87CEFA</Color>
+		<Color type="functions">#87FAC4</Color>
+		<Color type="numbers">#FFCD8B</Color>
+		<Color type="keywords">#808BED</Color>
+	</Theme>
+
+</JSyntaxHighlighter>

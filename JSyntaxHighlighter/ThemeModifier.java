@@ -22,6 +22,15 @@
 package JSyntaxHighlighter;
 
 import java.awt.Color;
+import java.io.File;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXParseException;
 
 public class ThemeModifier {
 
@@ -32,6 +41,7 @@ public class ThemeModifier {
 	private Color caretColor;
 	private Color selectionBackColor;
 	private Color selectionForeColor;
+	private Color lineNumbers;
 	
 	public ThemeModifier(Themes theme) {
 		switch(theme){
@@ -63,6 +73,10 @@ public class ThemeModifier {
 			break;
 		}
 	}
+	
+	public ThemeModifier(File theme) {
+		setCustomThemeFromFile(theme);
+	}
 
 	public SyntaxStyle getNewStyle(){
 		return syntaxStyle;
@@ -90,6 +104,10 @@ public class ThemeModifier {
 	
 	public Color getSelectionForeColor(){
 		return selectionForeColor;
+	}
+	
+	public Color getLineNumbersColor(){
+		return lineNumbers;
 	}
 	
 	// Monokai - Extended
@@ -233,5 +251,64 @@ public class ThemeModifier {
 		syntaxStyle.CLASS = Color.decode("#9CF828");
 		syntaxStyle.FUNCTION = Color.decode("#F7C527");
 		syntaxStyle.COMMENTS = Color.decode("#8146A2");
+	}
+	
+	public void setCustomThemeFromFile(File theme){
+		if (theme != null){
+			try{
+				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				Document doc = db.parse(theme);
+				
+				// normalize text
+				doc.getDocumentElement().normalize();
+				
+				if (doc.getDocumentElement().getNodeName() != "JSyntaxHighlighter"){
+					System.out.println("Error: Theme file is not of JSyntaxHiglighter! Please make sure you've spelt everything correctly, and try again.");
+					return;
+				}else{
+					// Get keywords
+					NodeList nodeList = doc.getElementsByTagName("Color");
+					for (int i = 0; i < nodeList.getLength(); i++){
+						Node n = nodeList.item(i);
+						
+						if (n.getNodeType() == Node.ELEMENT_NODE){
+							// Get attribute
+							String attr = n.getAttributes().getNamedItem("type").getNodeValue();
+							
+							if (attr.equals("foreground")){
+								foreground = Color.decode(n.getTextContent());
+							}else if (attr.equals("background")){
+								background = Color.decode(n.getTextContent());
+							}else if (attr.equals("selection.fore")){
+								selectionForeColor = Color.decode(n.getTextContent());
+							}else if (attr.equals("selection.back")){
+								selectionBackColor = Color.decode(n.getTextContent());
+							}else if (attr.equals("caret")){
+								caretColor = Color.decode(n.getTextContent());
+							}else if (attr.equals("line.numbers")){
+								lineNumbers = Color.decode(n.getTextContent());
+							}else if (attr.equals("comments")){
+								syntaxStyle.COMMENTS = Color.decode(n.getTextContent());
+							}else if (attr.equals("class")){
+								syntaxStyle.CLASS = Color.decode(n.getTextContent());		
+							}else if (attr.equals("functions")){
+								syntaxStyle.FUNCTION = Color.decode(n.getTextContent());
+							}else if (attr.equals("numbers")){
+								syntaxStyle.NUMERICAL = Color.decode(n.getTextContent());
+							}else if (attr.equals("keywords")){
+								syntaxStyle.KEYWORDS = Color.decode(n.getTextContent());
+							}
+						}
+					}
+												
+				}
+				
+			}catch (SAXParseException e){
+				e.printStackTrace();
+			}catch (Throwable t){
+				t.printStackTrace();
+			}
+		}
 	}
 }
