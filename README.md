@@ -1,5 +1,5 @@
-JSyntaxHighlighter
-==================
+JSyntaxHighlighter - Alpha Build
+================================
 
 JSyntaxHighlighter is a highly configurable Syntax Highlighter for Java.
 
