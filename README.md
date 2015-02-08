@@ -13,7 +13,7 @@ To use JSyntaxHighlighter, simply download and add the library JSyntaxHighlighte
 ####Options available for new JSyntaxHighlighter()
 
 #####Setting the Language
-`...JSyntaxHighlighter(Language.Java);`
+`...JSyntaxHighlighter(Language.Java,...);`
 
 ######Languages Available:
 + C
@@ -35,8 +35,8 @@ To use JSyntaxHighlighter, simply download and add the library JSyntaxHighlighte
 + Vibrant Ink
 + Xcode
 
-Custom Language Files
----------------------
+User Defined Languages
+----------------------
 JSyntaxHighlighter fully supports custom language files. To create a language file, create a new .lang file and follow the example given in the documented
 "lua.lang" file which can be found in the root directory.
 
@@ -52,6 +52,15 @@ Or if you have already created a JSyntaxHighlighter object and want to change th
 ######Rules that can be overridden within the .lang file
 + Single line Comments (s-comments)
 + Multi-line Comments  (m-comments)
+
+
+User Defined Themes
+-------------------
+JSyntaxHighlighter fully supports user defined themes. To create a new theme, create a .color file and follow the example given in the "inkpot.color" file which can be found in the root directory.
+
+To then use your new Theme, simply use this in the constructor:
+
+`...JSyntaxHighlighter(Language.Java, new File("path-to-file/file.color"));`
 
 
 License
