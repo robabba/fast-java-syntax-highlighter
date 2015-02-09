@@ -1,4 +1,4 @@
-JSyntaxHighlighter - Alpha Build
+Fast Java Syntax Highlighter - Alpha Build
 ================================
 
 JSyntaxHighlighter is a highly configurable Syntax Highlighter for Java.
