@@ -28,7 +28,6 @@ import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import JSyntaxHighlighter.SyntaxRules;

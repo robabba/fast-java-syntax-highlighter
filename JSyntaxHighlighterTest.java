@@ -19,11 +19,12 @@
 	THE SOFTWARE.
 */
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 
-import JSyntaxHighlighter.Languages.*;
 import JSyntaxHighlighter.*;
 
 import javax.swing.*;
@@ -33,7 +34,7 @@ public class JSyntaxHighlighterTest {
 	public static void main(String[] args) {
 		
 			// Create a new instance of JSyntaxHighlighter
-			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.Java, new File("src/inkpot.color"));
+			JSyntaxHighlighter syntaxHighlighter = new JSyntaxHighlighter(Language.Java, Themes.Obsidian);
 			// Create a new JFrame
 			JFrame form = new JFrame("JSyntaxHighlighter - Alpha Build");
 			
@@ -130,8 +131,11 @@ public class JSyntaxHighlighterTest {
 			form.add(comboBox);
 			//form.add(sPane);
 			form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			form.setVisible(true);
 			
+			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+			form.setLocation(dim.width/2- form.getSize().width/2, dim.height/2- form.getSize().height/2);
+			
+			form.setVisible(true);
 			
 	}
 

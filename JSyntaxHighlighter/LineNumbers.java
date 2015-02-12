@@ -52,7 +52,7 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 		private int currentLines, lineWidth, anchor, lastIndex, offset, textWidth;
 
 		public LineNumbers(JEditorPane editorPane) {
-	        this.editorPane = editorPane;
+			this.editorPane = editorPane;
 	        editorPane.getDocument().addDocumentListener(this);
 	        setForeground(editorPane.getForeground());
 	        setBackground(editorPane.getBackground());
@@ -63,7 +63,7 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 	        addMouseMotionListener(this);
 	        editorPane.addMouseListener(this);
 	        setPreferredSize(new Dimension(24, 17));
-	        editorPane.addCaretListener(this);
+	        editorPane.addCaretListener(this); 
 		  }
 		
 		  /**
@@ -78,6 +78,7 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 		        } catch (BadLocationException ex) {
 		              ex.printStackTrace();
 		        }
+		        
 		  }
 		
 		  /**
@@ -122,18 +123,19 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 		              lines++;
 		              index = text.indexOf('\n', index + 1);
 		        } while (index >= 0);
+		                
 		        if (lines != currentLines) {
 		              currentLines = lines;
 		              repaint();
+		        }else{
+		        	repaint();
 		        }
 		  }
 		
 		  /**
 		   * Draws the line numbers.
 		   */
-		  @Override
-		  public void paint(Graphics g) {
-			  
+		  public void paintComponent(Graphics g) {
 			checkLines(editorPane.getText());
 			g.setFont(editorPane.getFont());
 			FontMetrics fm = g.getFontMetrics(g.getFont().deriveFont(12f));
@@ -142,20 +144,24 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 			      lineWidth = fm.getHeight();
 			      offset = fm.getAscent() - lineWidth / 2;
 			}
+			
 			g.setFont(editorPane.getFont().deriveFont(Font.PLAIN, 11f));
 			g.setColor(editorPane.getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
 			g.setColor(editorPane.getSelectionColor());
+			
 			int start = max(1, min(anchor, lastIndex));
 			int end = min(currentLines, max(anchor, lastIndex));
 			
 			g.fillRect(0, (start - 1) * lineWidth - offset, textWidth, (end - start + 1) * lineWidth);
+
 			int maxwidth = max(textWidth, fm.stringWidth("0000"));
-			
+				
 			    for (int i = 1; i <= currentLines; i++) {
 			          String str = Integer.toString(i);
 			
 			          maxwidth = max(maxwidth, fm.stringWidth(str));
+			          
 			          if (i >= start && i <= end) {
 			                g.setColor(editorPane.getSelectedTextColor());
 			          } else {
@@ -164,6 +170,7 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 			          
 			          g.drawString(str, textWidth - fm.stringWidth(str), i * lineWidth + offset); 
 			    }
+			    
 			    textWidth = maxwidth;
 			    g.setColor(editorPane.getForeground());
 			    
@@ -175,7 +182,7 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 			          setMinimumSize(new Dimension(maxwidth + 8, lineWidth * currentLines));
 			          repaint();
 			    }
-		  }
+	      }
 		
 		  /**
 		   * Handles selection in the text pane due to gestures on the line numbers.
@@ -271,7 +278,7 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 		  /**
 		   * Empty - part of the MouseListener interface.
 		   */
-		   public void mouseEntered(MouseEvent e) {}
+		   public void mouseEntered(MouseEvent e) { repaint(); }
 		
 		  /**
 		   * Empty - part of the MouseListener interface.

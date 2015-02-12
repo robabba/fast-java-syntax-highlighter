@@ -33,6 +33,7 @@ public class JSyntaxHighlighter extends JScrollPane {
 
 	private static final long serialVersionUID = 8111955883531380120L;
 	private JSyntaxHighlighterObject sho = null;
+	private LineNumbers ln;
 	
 	/**
 	 * <b><u>JSyntaxHighlighter Default Constructor</u></b>
@@ -41,43 +42,57 @@ public class JSyntaxHighlighter extends JScrollPane {
 	public JSyntaxHighlighter(){
 		sho = new JSyntaxHighlighterObject();
 		this.setViewportView(sho);
-		this.setRowHeaderView(new LineNumbers(sho));
-		
+
 		applyFont();
+		
+		ln = new LineNumbers(sho);
+		ln.repaint();
+		this.setRowHeaderView(ln);
 	}
 	
 	public JSyntaxHighlighter(Language language, Themes theme){
 		sho = new JSyntaxHighlighterObject(language, theme);
 		this.setViewportView(sho);
-		this.setRowHeaderView(new LineNumbers(sho));
-		
 		
 		sho.changeSyntaxHighlightingTheme(theme);
 		applyFont();
+		
+		ln = new LineNumbers(sho);
+		ln.repaint();
+		this.setRowHeaderView(ln);
 	}
 	
 	public JSyntaxHighlighter(File language, Themes theme){
 		sho = new JSyntaxHighlighterObject(language, theme);
 		this.setViewportView(sho);
-		this.setRowHeaderView(new LineNumbers(sho));
-
+		
 		applyFont();
+		
+		ln = new LineNumbers(sho);
+		ln.repaint();
+		this.setRowHeaderView(ln);
 	}
 	
 	public JSyntaxHighlighter(File language, File theme){
 		sho = new JSyntaxHighlighterObject(language, theme);
 		this.setViewportView(sho);
-		this.setRowHeaderView(new LineNumbers(sho));
-
+		
 		applyFont();
+		
+		ln = new LineNumbers(sho);
+		ln.repaint();
+		this.setRowHeaderView(ln);
 	}
 	
 	public JSyntaxHighlighter(Language language, File theme){
 		sho = new JSyntaxHighlighterObject(language, theme);
 		this.setViewportView(sho);
-		this.setRowHeaderView(new LineNumbers(sho));
-
+		
 		applyFont();
+		
+		ln = new LineNumbers(sho);
+		ln.repaint();
+		this.setRowHeaderView(ln);
 	}
 	
 	/**
@@ -114,5 +129,9 @@ public class JSyntaxHighlighter extends JScrollPane {
 	public void setText(String text){
 		sho.setText(text);
 		sho.highlightSyntax();
+	}
+	
+	public String getText(){
+		return sho.getText();
 	}
 }

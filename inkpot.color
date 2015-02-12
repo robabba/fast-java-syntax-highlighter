@@ -11,6 +11,7 @@
 		<Color type="class">#87CEFA</Color>
 		<Color type="functions">#87FAC4</Color>
 		<Color type="numbers">#FFCD8B</Color>
+		<Color type="strings">#FFCD8B</Color>
 		<Color type="keywords">#808BED</Color>
 	</Theme>
 
