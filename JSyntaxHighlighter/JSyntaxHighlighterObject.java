@@ -39,6 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JTextPane;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.SimpleAttributeSet;
@@ -88,6 +89,10 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		this.setFont(Meslo);
 		
 		this.setForeground(syntaxStyle.DEFAULT);
+		
+		AbstractDocument doc = (AbstractDocument)this.getDocument();
+		doc.setDocumentFilter(new AutoTab());
+		
 		//this.addKeyListener(highlight());
 	}
 	
@@ -116,6 +121,9 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		}catch (FontFormatException e) {
 			e.printStackTrace();
 		}
+		
+		AbstractDocument doc = (AbstractDocument)this.getDocument();
+		doc.setDocumentFilter(new AutoTab());
 		
 		this.setFont(Meslo);
 		this.changeLanguage(language);
@@ -147,6 +155,9 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		
 		this.setFont(Meslo);
 		
+		AbstractDocument doc = (AbstractDocument)this.getDocument();
+		doc.setDocumentFilter(new AutoTab());
+		
 		LanguageBuilder lb = new LanguageBuilder(language);
 		syntaxRules = new SyntaxRules();
 		syntaxRules = lb.getRules();
@@ -177,6 +188,9 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			e.printStackTrace();
 		}
 		
+		AbstractDocument doc = (AbstractDocument)this.getDocument();
+		doc.setDocumentFilter(new AutoTab());
+		
 		this.setFont(Meslo);
 		
 		this.changeLanguage(language);
@@ -206,6 +220,9 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		}catch (FontFormatException e) {
 			e.printStackTrace();
 		}
+		
+		AbstractDocument doc = (AbstractDocument)this.getDocument();
+		doc.setDocumentFilter(new AutoTab());
 		
 		this.setFont(Meslo);
 		
@@ -350,7 +367,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			
 			@Override
 			public void keyTyped(KeyEvent e) { 
-				if (e.getKeyChar() == ' ' || e.getKeyChar() == 10 || e.getKeyChar() == '(')
+				if (e.getKeyChar() == ' ' || e.getKeyChar() == 10 || e.getKeyChar() == '(' || e.getKeyChar() == ';' || e.getKeyChar() == '.' || e.getKeyChar() == '{' || e.getKeyChar() == '"')
 					highlightSyntax();
 			}
 

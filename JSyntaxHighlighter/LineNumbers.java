@@ -56,7 +56,7 @@ public class LineNumbers extends JPanel implements DocumentListener, MouseListen
 	        editorPane.getDocument().addDocumentListener(this);
 	        setForeground(editorPane.getForeground());
 	        setBackground(editorPane.getBackground());
-	        currentLines = 1;
+	        currentLines = -1;
 	        lastIndex = -1;
 	        anchor = -1;
 	        addMouseListener(this);
