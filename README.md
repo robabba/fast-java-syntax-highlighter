@@ -1,6 +1,6 @@
 Fast Java Syntax Highlighter - Alpha Build
 ================================
-:exclamation: NOTE: This is a **alpha build!** Bugs are to expected
+:exclamation: NOTE: This is a **alpha build!** Bugs are to be expected
 
 JSyntaxHighlighter is a highly configurable Syntax Highlighter for Java.
 
