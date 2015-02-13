@@ -1,5 +1,6 @@
 Fast Java Syntax Highlighter - Alpha Build
 ================================
+:exclamation: NOTE: This is a **alpha build!** Bugs are to expected
 
 JSyntaxHighlighter is a highly configurable Syntax Highlighter for Java.
 
@@ -8,13 +9,16 @@ How to use
 ----------
 To use JSyntaxHighlighter, simply download and add the library JSyntaxHighlighter.jar to your project and add the following to your respective JFrame file:
 
-`JSyntaxHighlighter synHighlighter = new JSyntaxHighlighter();`
+```java
+JSyntaxHighlighter synHighlighter = new JSyntaxHighlighter();
+```
 
 ####Options available for new JSyntaxHighlighter()
 
 #####Setting the Language
-`...JSyntaxHighlighter(Language.Java,...);`
-
+```java
+...JSyntaxHighlighter(Language.Java,...);
+```
 ######Languages Available:
 + C
 + C++
@@ -23,8 +27,9 @@ To use JSyntaxHighlighter, simply download and add the library JSyntaxHighlighte
 + Visual Basic
 
 #####Setting the Color Scheme (Language needs to be specified)
-`...JSyntaxHighlighter(Language.Java, Themes.Obsidian);`
-
+```java
+...JSyntaxHighlighter(Language.Java, Themes.Obsidian);
+```
 ######Color Schemes Available:
 + Dusk
 + Monokai Extended (Sublime Text 3 ver.)
@@ -41,14 +46,15 @@ JSyntaxHighlighter fully supports custom language files. To create a language fi
 "lua.lang" file which can be found in the root directory.
 
 To then use your custom Language file, simply use this in the constructor:
-
-`...JSyntaxHighlighter(new File("path-to-file/file.lang"), Themes.VibrantInk);`
-
+```java
+...JSyntaxHighlighter(new File("path-to-file/file.lang"), Themes.VibrantInk);
+```
 
 Or if you have already created a JSyntaxHighlighter object and want to change the language later on, call:
 
-`synHighlighter.changeLanguage(new File("path-to-file/file.lang"));`
-
+```java
+`synHighlighter.changeLanguage(new File("path-to-file/file.lang"));
+```
 ######Rules that can be overridden within the .lang file
 + Single line Comments (s-comments)
 + Multi-line Comments  (m-comments)
@@ -60,7 +66,9 @@ JSyntaxHighlighter fully supports user defined themes. To create a new theme, cr
 
 To then use your new Theme, simply use this in the constructor:
 
-`...JSyntaxHighlighter(Language.Java, new File("path-to-file/file.color"));`
+```java
+...JSyntaxHighlighter(Language.Java, new File("path-to-file/file.color"));
+```
 
 
 License
