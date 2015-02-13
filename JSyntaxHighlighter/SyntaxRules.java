@@ -3,6 +3,7 @@ package JSyntaxHighlighter;
 public class SyntaxRules {
 
 	private String SYNTAX_KEYWORDS_RULE = "";
+	private String SYNTAX_DEFAULT_RULE = ".";
 	private String SYNTAX_STRING_RULE = "\\\"(\\.|[^\\\"])*\\\"";
 	private String SYNTAX_STRING_WITH_ESCAPE_RULE = "(\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")";
 	private String SYNTAX_NUMERIC_RULE = "\\b\\d+[\\.]?\\d*([eE]\\-?\\d+)?[lLdDfF]?\\b|\\b0x[a-fA-F\\d]+\\b";
@@ -10,7 +11,7 @@ public class SyntaxRules {
 	private String SYNTAX_MULTILINE_COMMENT_RULE = "/\\*(.|[\\r\\n])*?\\*/";
 	private String SYNTAX_SINGLELINE_COMMENT_RULE = "//.*";
 	private String SYNTAX_OPERATOR_RULE = "(<=|>=|!=|=|>|<)";
-	private String SYNTAX_FUNCTION_RULE = "(\\w+\\()+([^\\)]*\\)+)*";
+	private String SYNTAX_FUNCTION_RULE = "(\\w+\\()+([^\\)]*\\)+)";
 
 	public SyntaxRules() { }
 	
@@ -137,5 +138,9 @@ public class SyntaxRules {
 	
 	public String getFunctionRule(){
 		return SYNTAX_FUNCTION_RULE;
+	}
+	
+	public String getDefaultRule(){
+		return SYNTAX_DEFAULT_RULE;
 	}
 }

@@ -177,7 +177,7 @@ public class ThemeModifier {
 		this.selectionForeColor = Color.decode("#E0E2E4");
 		this.caretColor = Color.white;
 
-		syntaxStyle.DEFAULT = Color.decode("#293134");
+		syntaxStyle.DEFAULT = Color.decode("#E0E2E4");
 		syntaxStyle.KEYWORDS = Color.decode("#93C763");
 		syntaxStyle.STRINGS = Color.decode("#EC7600");
 		syntaxStyle.NUMERICAL = Color.decode("#FFCD22");

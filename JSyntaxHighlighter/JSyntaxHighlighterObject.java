@@ -23,14 +23,12 @@
 
 package JSyntaxHighlighter;
 
-import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -87,8 +85,6 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		}
 	
 		this.setFont(Meslo);
-		
-		this.setForeground(syntaxStyle.DEFAULT);
 		
 		AbstractDocument doc = (AbstractDocument)this.getDocument();
 		doc.setDocumentFilter(new AutoTab());
@@ -256,7 +252,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 			e.printStackTrace();
 		}
 		
-		this.addKeyListener(highlight());
+		//this.addKeyListener(highlight());
 		
 		this.setBackground(themeMod.getBackground());
 		this.setForeground(themeMod.getForeground());
@@ -299,7 +295,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		}
 		
 		this.highlightSyntax();
-		this.addKeyListener(highlight());
+		//this.addKeyListener(highlight());
 	}
 	
 	private void setTabSpacing(){
@@ -358,7 +354,7 @@ public class JSyntaxHighlighterObject extends JTextPane{
 	}
 	
 	private void clearSyntaxColors(){
-		updateSyntaxColor(0, this.getText().length(), this.getForeground(), Font.BOLD);
+		updateSyntaxColor(0, this.getText().length(), this.getForeground() , Font.BOLD);
 	}
 	
 	// KEY LISTENER
@@ -366,23 +362,52 @@ public class JSyntaxHighlighterObject extends JTextPane{
 		return new KeyListener(){
 			
 			@Override
-			public void keyTyped(KeyEvent e) { 
+			public void keyTyped(KeyEvent e) { 		
+				if (e.getKeyChar() == ' ' || e.getKeyChar() == 10 || e.getKeyChar() == '(' || e.getKeyChar() == ';' || e.getKeyChar() == '.' || e.getKeyChar() == '{' || e.getKeyChar() == '"')
+					highlightSyntax();
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {					
 				if (e.getKeyChar() == ' ' || e.getKeyChar() == 10 || e.getKeyChar() == '(' || e.getKeyChar() == ';' || e.getKeyChar() == '.' || e.getKeyChar() == '{' || e.getKeyChar() == '"')
 					highlightSyntax();
 			}
 
 			@Override
-			public void keyPressed(KeyEvent e) { }
-
-			@Override
-			public void keyReleased(KeyEvent e) { }
+			public void keyReleased(KeyEvent e){ 
+				highlightSyntax(); 
+		
+				int currentCaretPos = ((JTextPane)e.getSource()).getCaretPosition();
+				
+				if (e.getKeyChar() == '"' || e.getKeyChar() == '\''){
+					setText(appendCharacterAtIndex(currentCaretPos, e.getKeyChar()));
+					((JTextPane)e.getSource()).setCaretPosition(currentCaretPos);
+				}else if (e.getKeyChar() == '('){
+					setText(appendCharacterAtIndex(currentCaretPos, ')'));
+					((JTextPane)e.getSource()).setCaretPosition(currentCaretPos);
+				}else if (e.getKeyChar() == '{'){
+					setText(appendCharactersAtIndex(currentCaretPos, "\n\t\n}"));
+					((JTextPane)e.getSource()).setCaretPosition(currentCaretPos + 2);
+				}
+			}
 		};
 	}
 	// END OF KEY LISTENER
 	
+	/**
+	 * Start highlighting the syntax in the JTextPane
+	 */
 	public void highlightSyntax(){
 		
 		clearSyntaxColors();
+		
+		// Default
+		Pattern pattern = Pattern.compile(syntaxRules.getDefaultRule());
+		Matcher match = pattern.matcher(this.getText());
+		while (match.find()){
+			updateSyntaxColor(match.start(), match.end() - match.start(), syntaxStyle.DEFAULT, Font.BOLD);
+		}
 		
 		// Functions
 		Pattern patternFun = Pattern.compile(syntaxRules.getFunctionRule());
@@ -459,5 +484,21 @@ public class JSyntaxHighlighterObject extends JTextPane{
 
 	public void setThemeModifer(ThemeModifier themeMod) {
 		this.themeMod = themeMod;
+	}
+	
+	private String appendCharacterAtIndex(int index, char character){
+		String str = getText().substring(0, index);
+		str += "" + character;
+		str += getText().substring(index, getText().length());
+		
+		return str;
+	}
+	
+	private String appendCharactersAtIndex(int index, String characters){
+		String str = getText().substring(0, index);
+		str += "" + characters;
+		str += getText().substring(index, getText().length());
+		
+		return str;
 	}
 }
